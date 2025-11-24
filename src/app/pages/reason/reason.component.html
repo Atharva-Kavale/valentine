@@ -1,46 +1,47 @@
-<div
-  *ngIf="reason"
-  class="flex min-h-[calc(100vh-80px)] items-center justify-center px-2 py-4 sm:px-4"
->
-  <div class="w-full max-w-6xl rounded-2xl bg-white shadow-xl sm:rounded-3xl">
-    <div class="flex flex-col md:flex-row">
-      <div class="md:w-1/2">
-        <div class="aspect-square md:aspect-auto md:h-full">
-          <img
-            [src]="reason.image"
-            [alt]="'Us - Reason ' + reason.id"
-            class="h-full w-full rounded-t-2xl object-cover sm:rounded-t-3xl md:rounded-t-2xl md:rounded-l-2xl md:rounded-r-none sm:md:rounded-l-3xl"
-          />
+@if (reason) {
+  <div
+    class="flex min-h-[calc(100vh-80px)] items-center justify-center px-2 py-4 sm:px-4"
+  >
+    <div class="w-full max-w-6xl rounded-2xl bg-white shadow-xl sm:rounded-3xl">
+      <div class="flex flex-col md:flex-row">
+        <div class="md:w-1/2">
+          <div class="aspect-square md:aspect-auto md:h-full">
+            <img
+              [src]="reason.image"
+              [alt]="'Us - Reason ' + reason.id"
+              class="h-full w-full rounded-t-2xl object-cover sm:rounded-t-3xl md:rounded-t-2xl md:rounded-l-2xl md:rounded-r-none sm:md:rounded-l-3xl"
+            />
+          </div>
         </div>
-      </div>
-      <div class="flex flex-col justify-center p-6 sm:p-8 md:w-1/2 md:p-12">
-        <div class="animate-fade-in">
-          <h2
-            class="text-love-500 mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl md:text-4xl"
-          >
-            Reason {{ reason.id }}
-          </h2>
-          <p
-            class="mb-6 text-base leading-relaxed text-gray-800 sm:mb-8 sm:text-lg md:text-xl"
-          >
-            {{ reason.text }}
-          </p>
-          <div class="flex flex-col gap-3 sm:flex-row sm:gap-4">
-            <button
-              routerLink="/"
-              class="bg-love-500 hover:bg-love-600 cursor-pointer rounded-full px-6 py-3 text-sm text-white transition-colors sm:text-base"
+        <div class="flex flex-col justify-center p-6 sm:p-8 md:w-1/2 md:p-12">
+          <div class="animate-fade-in">
+            <h2
+              class="text-love-500 mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl md:text-4xl"
             >
-              Back Home
-            </button>
-            <button
-              routerLink="/gallery"
-              class="border-love-500 text-love-500 hover:bg-love-50 cursor-pointer rounded-full border-2 px-6 py-3 text-sm transition-colors sm:text-base"
+              Reason {{ reason.id }}
+            </h2>
+            <p
+              class="mb-6 text-base leading-relaxed text-gray-800 sm:mb-8 sm:text-lg md:text-xl"
             >
-              View Gallery
-            </button>
+              {{ reason.text }}
+            </p>
+            <div class="flex flex-col gap-3 sm:flex-row sm:gap-4">
+              <button
+                routerLink="/"
+                class="bg-love-500 hover:bg-love-600 cursor-pointer rounded-full px-6 py-3 text-sm text-white transition-colors sm:text-base"
+              >
+                Back Home
+              </button>
+              <button
+                routerLink="/gallery"
+                class="border-love-500 text-love-500 hover:bg-love-50 cursor-pointer rounded-full border-2 px-6 py-3 text-sm transition-colors sm:text-base"
+              >
+                View Gallery
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+}

@@ -32,99 +32,106 @@
         </nav>
 
         <div class="flex items-center space-x-2">
-          <div
-            class="volume-control relative flex items-center"
-            *ngIf="isPlaying$ | async"
-          >
-            <button
-              (click)="toggleVolumeSlider()"
-              [attr.aria-label]="'Adjust volume'"
-              class="hover:text-love-200 p-1 transition-colors sm:p-2"
-            >
-              <span class="text-xl sm:text-2xl" aria-hidden="true">{{
-                (isMuted$ | async) ? "🔇" : "🔊"
-              }}</span>
-            </button>
+          @if (isPlaying$ | async) {
+            <div class="volume-control relative flex items-center">
+              <button
+                (click)="toggleVolumeSlider()"
+                [attr.aria-label]="'Adjust volume'"
+                class="hover:text-love-200 p-1 transition-colors sm:p-2"
+              >
+                <span class="text-xl sm:text-2xl" aria-hidden="true">
+                  {{ (isMuted$ | async) ? "🔇" : "🔊" }}
+                </span>
+              </button>
 
-            <div
-              *ngIf="showVolumeSlider"
-              class="absolute top-12 right-0 z-50 w-80 rounded-lg bg-white p-5 shadow-xl"
-            >
-              <div class="flex flex-col items-center space-y-4">
-                <div class="flex w-full items-center justify-between">
-                  <label class="text-love-500 text-sm font-semibold"
-                    >Volume</label
-                  >
-                  <span class="text-love-600 text-xs font-medium"
-                    >{{ (volume$ | async)! * 100 | number: "1.0-0" }}%</span
-                  >
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  [value]="(volume$ | async)! * 100"
-                  (input)="onVolumeChange($event)"
-                  class="volume-slider h-2 w-full cursor-pointer appearance-none rounded-lg bg-gradient-to-r from-pink-400 to-pink-500"
-                />
-                <button
-                  (click)="onToggleMute()"
-                  class="mute-button bg-love-50 text-love-600 hover:bg-love-100 active:bg-love-200 relative w-full overflow-hidden rounded-md border border-pink-100 px-4 py-2 text-sm font-medium shadow-md transition-all hover:shadow-lg focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-pink-500 active:scale-95"
+              @if (showVolumeSlider) {
+                <div
+                  class="absolute top-12 right-0 z-50 w-80 rounded-lg bg-white p-5 shadow-xl"
                 >
-                  {{ (isMuted$ | async) ? "Unmute" : "Mute" }}
-                </button>
-
-                <!-- Song List -->
-                <div class="w-full border-t border-pink-100 pt-4">
-                  <label class="text-love-500 mb-3 block text-sm font-semibold"
-                    >Select Song</label
-                  >
-                  <div class="grid grid-cols-2 gap-3">
+                  <div class="flex flex-col items-center space-y-4">
+                    <div class="flex w-full items-center justify-between">
+                      <label class="text-love-500 text-sm font-semibold">
+                        Volume
+                      </label>
+                      <span class="text-love-600 text-xs font-medium">
+                        {{ (volume$ | async)! * 100 | number: "1.0-0" }}%
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      [value]="(volume$ | async)! * 100"
+                      (input)="onVolumeChange($event)"
+                      class="volume-slider h-2 w-full cursor-pointer appearance-none rounded-lg bg-gradient-to-r from-pink-400 to-pink-500"
+                    />
                     <button
-                      *ngFor="let song of songs; trackBy: trackBySongId"
-                      (click)="onSongSelect(song)"
-                      [class.bg-pink-100]="
-                        (currentSong$ | async)?.id === song.id
-                      "
-                      [class.border-pink-400]="
-                        (currentSong$ | async)?.id === song.id
-                      "
-                      [class.ring-2]="(currentSong$ | async)?.id === song.id"
-                      [class.ring-pink-300]="
-                        (currentSong$ | async)?.id === song.id
-                      "
-                      class="hover:bg-love-50 relative flex h-40 flex-col items-center justify-center gap-2 rounded-lg border border-pink-100 p-3 transition-all hover:border-pink-300 hover:shadow-md"
+                      (click)="onToggleMute()"
+                      class="mute-button bg-love-50 text-love-600 hover:bg-love-100 active:bg-love-200 relative w-full overflow-hidden rounded-md border border-pink-100 px-4 py-2 text-sm font-medium shadow-md transition-all hover:shadow-lg focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-pink-500 active:scale-95"
                     >
-                      <img
-                        [src]="song.thumbnailUrl"
-                        [alt]="song.title"
-                        class="h-16 w-16 flex-shrink-0 rounded-md object-cover shadow-sm"
-                      />
-                      <div class="w-full text-center">
-                        <p
-                          class="text-love-600 line-clamp-2 text-xs font-semibold"
-                          [title]="song.title"
-                        >
-                          {{ song.title }}
-                        </p>
-                        <p
-                          class="text-love-400 line-clamp-1 text-[10px]"
-                          [title]="song.artist"
-                        >
-                          {{ song.artist }}
-                        </p>
-                      </div>
-                      <span
-                        *ngIf="(currentSong$ | async)?.id === song.id"
-                        class="absolute top-2 right-2 text-base text-pink-500"
-                        >♪</span
-                      >
+                      {{ (isMuted$ | async) ? "Unmute" : "Mute" }}
                     </button>
+
+                    <!-- Song List -->
+                    <div class="w-full border-t border-pink-100 pt-4">
+                      <label
+                        class="text-love-500 mb-3 block text-sm font-semibold"
+                      >
+                        Select Song
+                      </label>
+                      <div class="grid grid-cols-2 gap-3">
+                        @for (song of songs; track song.id) {
+                          <button
+                            (click)="onSongSelect(song)"
+                            [class.bg-pink-100]="
+                              (currentSong$ | async)?.id === song.id
+                            "
+                            [class.border-pink-400]="
+                              (currentSong$ | async)?.id === song.id
+                            "
+                            [class.ring-2]="
+                              (currentSong$ | async)?.id === song.id
+                            "
+                            [class.ring-pink-300]="
+                              (currentSong$ | async)?.id === song.id
+                            "
+                            class="hover:bg-love-50 relative flex h-40 flex-col items-center justify-center gap-2 rounded-lg border border-pink-100 p-3 transition-all hover:border-pink-300 hover:shadow-md"
+                          >
+                            <img
+                              [src]="song.thumbnailUrl"
+                              [alt]="song.title"
+                              class="h-16 w-16 flex-shrink-0 rounded-md object-cover shadow-sm"
+                            />
+                            <div class="w-full text-center">
+                              <p
+                                class="text-love-600 line-clamp-2 text-xs font-semibold"
+                                [title]="song.title"
+                              >
+                                {{ song.title }}
+                              </p>
+                              <p
+                                class="text-love-400 line-clamp-1 text-[10px]"
+                                [title]="song.artist"
+                              >
+                                {{ song.artist }}
+                              </p>
+                            </div>
+                            @if ((currentSong$ | async)?.id === song.id) {
+                              <span
+                                class="absolute top-2 right-2 text-base text-pink-500"
+                              >
+                                ♪
+                              </span>
+                            }
+                          </button>
+                        }
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              }
             </div>
-          </div>
+          }
         </div>
       </div>
     </div>

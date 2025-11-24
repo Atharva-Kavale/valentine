@@ -12,11 +12,13 @@ export class AudioService {
   private isMutedSubject = new BehaviorSubject<boolean>(false);
   private volumeSubject = new BehaviorSubject<number>(0.5);
   private currentSongSubject = new BehaviorSubject<Song | null>(null);
+  private isLoadingSubject = new BehaviorSubject<boolean>(true);
 
   isPlaying$ = this.isPlayingSubject.asObservable();
   isMuted$ = this.isMutedSubject.asObservable();
   volume$ = this.volumeSubject.asObservable();
   currentSong$ = this.currentSongSubject.asObservable();
+  isLoading$ = this.isLoadingSubject.asObservable();
 
   // Available songs list
   private songs: Song[] = [
@@ -48,6 +50,49 @@ export class AudioService {
     const savedSong = this.loadSavedSong();
     this.currentSongSubject.next(savedSong);
     this.audio.src = savedSong.audioUrl;
+
+    // Preload assets
+    this.preloadAssets();
+  }
+
+  private async preloadAssets(): Promise<void> {
+    try {
+      // Preload all song thumbnails
+      const imagePromises = this.songs.map((song) => {
+        return new Promise<void>((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve();
+          img.onerror = () =>
+            reject(new Error(`Failed to load ${song.thumbnailUrl}`));
+          img.src = song.thumbnailUrl;
+        });
+      });
+
+      // Preload the current audio file
+      const audioPromise = new Promise<void>((resolve, reject) => {
+        const handleCanPlay = () => {
+          this.audio.removeEventListener('canplaythrough', handleCanPlay);
+          this.audio.removeEventListener('error', handleError);
+          resolve();
+        };
+        const handleError = () => {
+          this.audio.removeEventListener('canplaythrough', handleCanPlay);
+          this.audio.removeEventListener('error', handleError);
+          reject(new Error('Failed to load audio'));
+        };
+        this.audio.addEventListener('canplaythrough', handleCanPlay);
+        this.audio.addEventListener('error', handleError);
+        this.audio.load();
+      });
+
+      // Wait for all assets to load
+      await Promise.all([...imagePromises, audioPromise]);
+      this.isLoadingSubject.next(false);
+    } catch (error) {
+      console.error('Error preloading assets:', error);
+      // Still mark as loaded to prevent infinite loading
+      this.isLoadingSubject.next(false);
+    }
   }
 
   private loadSavedSong(): Song {

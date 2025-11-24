@@ -27,6 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isMuted$: Observable<boolean>;
   volume$: Observable<number>;
   currentSong$: Observable<Song | null>;
+  isLoading$: Observable<boolean>;
   songs: Song[];
 
   private destroy$ = new Subject<void>();
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isMuted$ = this.audioService.isMuted$;
     this.volume$ = this.audioService.volume$;
     this.currentSong$ = this.audioService.currentSong$;
+    this.isLoading$ = this.audioService.isLoading$;
     this.songs = this.audioService.getSongs();
   }
 

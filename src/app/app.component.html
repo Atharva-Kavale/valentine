@@ -1,29 +1,73 @@
-<app-header
-  [isPlaying$]="isPlaying$"
-  [isMuted$]="isMuted$"
-  [volume$]="volume$"
-  [currentSong$]="currentSong$"
-  [songs]="songs"
-  (muteToggle)="toggleMute()"
-  (volumeChange)="onVolumeChange($event)"
-  (songSelect)="onSongSelect($event)"
-></app-header>
-
-<main class="from-love-100 bg-gradient-to-b to-white">
-  <div class="container mx-auto px-2 sm:px-4">
-    <router-outlet></router-outlet>
-  </div>
-</main>
-
-<div
-  *ngIf="!(isPlaying$ | async)"
-  class="bg-love-300/50 fixed inset-0 z-[100] grid place-items-center backdrop-blur-sm"
->
-  <button
-    (click)="playMusic()"
-    aria-label="Play background music"
-    class="bg-love-300 hover:bg-love-400 cursor-pointer rounded-full p-3 text-white shadow-lg transition-colors duration-200 sm:p-4"
+<!-- Loading Screen -->
+@if (isLoading$ | async) {
+  <div
+    class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-rose-100 to-red-100"
   >
-    <span class="text-lg sm:text-2xl" aria-hidden="true">▶️ Play Music</span>
-  </button>
-</div>
+    <div class="flex flex-col items-center space-y-6">
+      <!-- Animated Hearts -->
+      <div class="relative h-24 w-24">
+        <div
+          class="absolute inset-0 flex animate-ping items-center justify-center text-6xl"
+          style="animation-duration: 1.5s"
+        >
+          ❤️
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center text-6xl">
+          ❤️
+        </div>
+      </div>
+
+      <!-- Loading Text -->
+      <div class="text-center">
+        <p class="text-love-600 text-xl font-semibold sm:text-2xl">
+          Loading Love Notes...
+        </p>
+        <p class="text-love-400 mt-2 text-sm">
+          Preparing something special for you
+        </p>
+      </div>
+
+      <!-- Loading Bar -->
+      <div class="h-1 w-64 overflow-hidden rounded-full bg-pink-200">
+        <div
+          class="h-full w-full animate-pulse bg-gradient-to-r from-pink-400 via-rose-400 to-red-400"
+          style="animation-duration: 1.5s"
+        ></div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <!-- Main Content -->
+  <app-header
+    [isPlaying$]="isPlaying$"
+    [isMuted$]="isMuted$"
+    [volume$]="volume$"
+    [currentSong$]="currentSong$"
+    [songs]="songs"
+    (muteToggle)="toggleMute()"
+    (volumeChange)="onVolumeChange($event)"
+    (songSelect)="onSongSelect($event)"
+  ></app-header>
+
+  <main class="from-love-100 bg-gradient-to-b to-white">
+    <div class="container mx-auto px-2 sm:px-4">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  @if (!(isPlaying$ | async)) {
+    <div
+      class="bg-love-300/50 fixed inset-0 z-[100] grid place-items-center backdrop-blur-sm"
+    >
+      <button
+        (click)="playMusic()"
+        aria-label="Play background music"
+        class="bg-love-300 hover:bg-love-400 cursor-pointer rounded-full p-3 text-white shadow-lg transition-colors duration-200 sm:p-4"
+      >
+        <span class="text-lg sm:text-2xl" aria-hidden="true">
+          ▶️ Play Music
+        </span>
+      </button>
+    </div>
+  }
+}

@@ -23,61 +23,66 @@
   <div
     class="mx-auto grid max-w-5xl grid-cols-1 gap-4 px-2 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3"
   >
-    <div
-      *ngFor="let reason of reasons; trackBy: trackByReasonId"
-      class="transform transition-all duration-300 hover:scale-105"
-      [class.cursor-pointer]="isUnlocked(reason)"
-      [ngClass]="
-        isUnlocked(reason)
-          ? 'cursor-pointer'
-          : hasActiveTimer(reason)
-            ? 'cursor-wait'
-            : 'cursor-not-allowed'
-      "
-    >
+    @for (reason of reasons; track reason.id) {
       <div
-        class="relative h-full min-h-[180px] rounded-2xl p-5 shadow-xl sm:min-h-[200px] sm:p-6"
-        [class.bg-white]="isUnlocked(reason)"
-        [class.bg-gray-100]="!isUnlocked(reason) && !hasActiveTimer(reason)"
-        [class.bg-love-50]="hasActiveTimer(reason)"
-        [class.border-2]="isUnlocked(reason) || hasActiveTimer(reason)"
-        [class.border-love-300]="isUnlocked(reason)"
-        [class.border-love-200]="hasActiveTimer(reason)"
-        (click)="openReason(reason)"
+        class="transform transition-all duration-300 hover:scale-105"
+        [class.cursor-pointer]="isUnlocked(reason)"
+        [ngClass]="
+          isUnlocked(reason)
+            ? 'cursor-pointer'
+            : hasActiveTimer(reason)
+              ? 'cursor-wait'
+              : 'cursor-not-allowed'
+        "
       >
-        <div class="space-y-3 text-center sm:space-y-4">
-          <div
-            class="text-3xl sm:text-4xl"
-            [class.animate-bounce]="isUnlocked(reason)"
-          >
-            <span *ngIf="isUnlocked(reason)">💝</span>
-            <span *ngIf="!isUnlocked(reason)">🔒</span>
+        <div
+          class="relative h-full min-h-[180px] rounded-2xl p-5 shadow-xl sm:min-h-[200px] sm:p-6"
+          [class.bg-white]="isUnlocked(reason)"
+          [class.bg-gray-100]="!isUnlocked(reason) && !hasActiveTimer(reason)"
+          [class.bg-love-50]="hasActiveTimer(reason)"
+          [class.border-2]="isUnlocked(reason) || hasActiveTimer(reason)"
+          [class.border-love-300]="isUnlocked(reason)"
+          [class.border-love-200]="hasActiveTimer(reason)"
+          (click)="openReason(reason)"
+        >
+          <div class="space-y-3 text-center sm:space-y-4">
+            <div
+              class="text-3xl sm:text-4xl"
+              [class.animate-bounce]="isUnlocked(reason)"
+            >
+              @if (isUnlocked(reason)) {
+                <span>💝</span>
+              } @else {
+                <span>🔒</span>
+              }
+            </div>
+            <p
+              class="text-lg font-semibold sm:text-xl"
+              [class.text-love-500]="
+                isUnlocked(reason) || hasActiveTimer(reason)
+              "
+              [class.text-gray-700]="
+                !isUnlocked(reason) && !hasActiveTimer(reason)
+              "
+            >
+              Box {{ reason.id }}
+            </p>
+            @if (isUnlocked(reason)) {
+              <p class="text-love-500 text-xs font-medium sm:text-sm">
+                Click to open
+              </p>
+            } @else {
+              <p
+                class="px-2 text-xs font-medium sm:text-sm"
+                [class.text-gray-700]="!hasActiveTimer(reason)"
+                [class.text-love-600]="hasActiveTimer(reason)"
+              >
+                {{ getCountdownText(reason) }}
+              </p>
+            }
           </div>
-          <p
-            class="text-lg font-semibold sm:text-xl"
-            [class.text-love-500]="isUnlocked(reason) || hasActiveTimer(reason)"
-            [class.text-gray-700]="
-              !isUnlocked(reason) && !hasActiveTimer(reason)
-            "
-          >
-            Box {{ reason.id }}
-          </p>
-          <p
-            *ngIf="!isUnlocked(reason)"
-            class="px-2 text-xs font-medium sm:text-sm"
-            [class.text-gray-700]="!hasActiveTimer(reason)"
-            [class.text-love-600]="hasActiveTimer(reason)"
-          >
-            {{ getCountdownText(reason) }}
-          </p>
-          <p
-            *ngIf="isUnlocked(reason)"
-            class="text-love-500 text-xs font-medium sm:text-sm"
-          >
-            Click to open
-          </p>
         </div>
       </div>
-    </div>
+    }
   </div>
 </div>
