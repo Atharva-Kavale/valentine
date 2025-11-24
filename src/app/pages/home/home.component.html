@@ -1,0 +1,83 @@
+<div class="container mx-auto p-4 sm:p-6">
+  <h1
+    class="text-love-500 mb-3 px-4 text-center text-3xl font-bold sm:mb-4 sm:text-4xl md:text-5xl"
+  >
+    Reasons Why I Love You
+  </h1>
+  <p
+    class="mx-auto mb-6 max-w-2xl px-4 text-center text-base text-gray-600 sm:mb-8 sm:text-lg"
+  >
+    These reasons are just the beginning... there are countless more ❤️
+  </p>
+
+  <!-- Gallery Navigation Button -->
+  <div class="mb-8 text-center sm:mb-12">
+    <button
+      routerLink="/gallery"
+      class="bg-love-500 hover:bg-love-600 transform cursor-pointer rounded-full px-6 py-3 text-base text-white shadow-lg transition-all duration-300 hover:scale-105 sm:px-8 sm:py-4 sm:text-lg"
+    >
+      View Our Gallery 📸
+    </button>
+  </div>
+
+  <div
+    class="mx-auto grid max-w-5xl grid-cols-1 gap-4 px-2 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3"
+  >
+    <div
+      *ngFor="let reason of reasons; trackBy: trackByReasonId"
+      class="transform transition-all duration-300 hover:scale-105"
+      [class.cursor-pointer]="isUnlocked(reason)"
+      [ngClass]="
+        isUnlocked(reason)
+          ? 'cursor-pointer'
+          : hasActiveTimer(reason)
+            ? 'cursor-wait'
+            : 'cursor-not-allowed'
+      "
+    >
+      <div
+        class="relative h-full min-h-[180px] rounded-2xl p-5 shadow-xl sm:min-h-[200px] sm:p-6"
+        [class.bg-white]="isUnlocked(reason)"
+        [class.bg-gray-100]="!isUnlocked(reason) && !hasActiveTimer(reason)"
+        [class.bg-love-50]="hasActiveTimer(reason)"
+        [class.border-2]="isUnlocked(reason) || hasActiveTimer(reason)"
+        [class.border-love-300]="isUnlocked(reason)"
+        [class.border-love-200]="hasActiveTimer(reason)"
+        (click)="openReason(reason)"
+      >
+        <div class="space-y-3 text-center sm:space-y-4">
+          <div
+            class="text-3xl sm:text-4xl"
+            [class.animate-bounce]="isUnlocked(reason)"
+          >
+            <span *ngIf="isUnlocked(reason)">💝</span>
+            <span *ngIf="!isUnlocked(reason)">🔒</span>
+          </div>
+          <p
+            class="text-lg font-semibold sm:text-xl"
+            [class.text-love-500]="isUnlocked(reason) || hasActiveTimer(reason)"
+            [class.text-gray-700]="
+              !isUnlocked(reason) && !hasActiveTimer(reason)
+            "
+          >
+            Box {{ reason.id }}
+          </p>
+          <p
+            *ngIf="!isUnlocked(reason)"
+            class="px-2 text-xs font-medium sm:text-sm"
+            [class.text-gray-700]="!hasActiveTimer(reason)"
+            [class.text-love-600]="hasActiveTimer(reason)"
+          >
+            {{ getCountdownText(reason) }}
+          </p>
+          <p
+            *ngIf="isUnlocked(reason)"
+            class="text-love-500 text-xs font-medium sm:text-sm"
+          >
+            Click to open
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
