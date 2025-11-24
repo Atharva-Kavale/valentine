@@ -1,6 +1,6 @@
 # 💖 Valentine's Love Box
 
-> *"Every great love story deserves to be told in code."*
+> _"Every great love story deserves to be told in code."_
 
 A romantic Angular web application that turns love into an interactive experience. Think of it as a digital love letter that unfolds over time, revealing heartfelt messages and cherished memories through an elegant, timed unlock mechanism.
 
@@ -125,11 +125,13 @@ Output goes to `dist/love-website/browser/`
 ### Deploy Options
 
 **GitHub Pages:**
+
 ```bash
 npm run deploy
 ```
 
 **Netlify/Vercel:**
+
 - Connect your repo
 - Build command: `npm run build`
 - Publish directory: `dist/love-website/browser`
@@ -196,6 +198,7 @@ Love is free, and so is this code. Use it to make someone special smile. ❤️
 ## 🙏 Acknowledgments
 
 Built with:
+
 - ❤️ Angular 19
 - 🎨 Tailwind CSS 4
 - 💖 Love and dedication
@@ -207,6 +210,6 @@ Built with:
 
 **Made with 💖 for someone special**
 
-*"Code may have bugs, but true love never does."*
+_"Code may have bugs, but true love never does."_
 
 </div>

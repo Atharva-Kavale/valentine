@@ -11,6 +11,7 @@ import { CursorService } from './service/cursor.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
+import { Song } from './model/song';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   isPlaying$: Observable<boolean>;
   isMuted$: Observable<boolean>;
+  volume$: Observable<number>;
+  currentSong$: Observable<Song | null>;
+  songs: Song[];
 
   private destroy$ = new Subject<void>();
 
@@ -34,6 +38,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
     this.isPlaying$ = this.audioService.isPlaying$;
     this.isMuted$ = this.audioService.isMuted$;
+    this.volume$ = this.audioService.volume$;
+    this.currentSong$ = this.audioService.currentSong$;
+    this.songs = this.audioService.getSongs();
   }
 
   ngOnInit() {
@@ -61,5 +68,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   toggleMute() {
     this.audioService.toggleMute();
+  }
+
+  onVolumeChange(volume: number) {
+    this.audioService.setVolume(volume);
+  }
+
+  onSongSelect(song: Song) {
+    this.audioService.selectSong(song);
   }
 }

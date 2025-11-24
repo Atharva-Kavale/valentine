@@ -11,6 +11,8 @@ export interface BoxState {
 })
 export class LocalStorageService {
   private readonly STORAGE_KEY = 'valentine_box_progress';
+  private readonly AUDIO_VOLUME_KEY = 'valentine_audio_volume';
+  private readonly AUDIO_SONG_KEY = 'valentine_selected_song';
   private readonly TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
 
   constructor() {
@@ -92,5 +94,32 @@ export class LocalStorageService {
   clearAllProgress(): void {
     localStorage.removeItem(this.STORAGE_KEY);
     this.initializeStorage();
+  }
+
+  // Audio preference methods
+  saveVolume(volume: number): void {
+    localStorage.setItem(this.AUDIO_VOLUME_KEY, volume.toString());
+  }
+
+  loadVolume(): number {
+    const saved = localStorage.getItem(this.AUDIO_VOLUME_KEY);
+    if (saved !== null) {
+      const volume = parseFloat(saved);
+      return isNaN(volume) ? 0.5 : Math.max(0, Math.min(1, volume));
+    }
+    return 0.5;
+  }
+
+  saveSongSelection(songId: number): void {
+    localStorage.setItem(this.AUDIO_SONG_KEY, songId.toString());
+  }
+
+  loadSongSelection(): number | null {
+    const saved = localStorage.getItem(this.AUDIO_SONG_KEY);
+    if (saved !== null) {
+      const songId = parseInt(saved);
+      return isNaN(songId) ? null : songId;
+    }
+    return null;
   }
 }

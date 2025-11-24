@@ -1,7 +1,12 @@
 <app-header
   [isPlaying$]="isPlaying$"
   [isMuted$]="isMuted$"
+  [volume$]="volume$"
+  [currentSong$]="currentSong$"
+  [songs]="songs"
   (muteToggle)="toggleMute()"
+  (volumeChange)="onVolumeChange($event)"
+  (songSelect)="onSongSelect($event)"
 ></app-header>
 
 <main class="from-love-100 bg-gradient-to-b to-white">
