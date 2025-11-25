@@ -48,8 +48,6 @@ export class GalleryComponent implements OnInit {
 
       // Trigger change detection
       this.cdr.markForCheck();
-
-      console.log('Gallery component loaded with items:', items.length);
     });
   }
 

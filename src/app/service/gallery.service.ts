@@ -45,7 +45,6 @@ export class GalleryService {
           tap((items) => {
             this.galleryItemsCache$.next(items);
             this.isLoaded = true;
-            console.log('Gallery items loaded and cached:', items.length);
           }),
           catchError((error) => {
             console.error('Failed to fetch gallery images:', error);
