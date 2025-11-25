@@ -7,7 +7,7 @@ import { SessionStorageService } from './session-storage.service';
 export class GalleryService {
   constructor(private sessionStorage: SessionStorageService) {}
   private images: string[] = [
-    'https://lh3.googleusercontent.com/d/1laqYAHWBMumgL8oVYU1IzfD6Zx74EZDK',
+    'placeholder.svg',
     'placeholder.svg',
     'placeholder.svg',
     'placeholder.svg',
