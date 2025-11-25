@@ -2,18 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-
-export interface GalleryImage {
-  id: number;
-  url: string;
-  alt?: string;
-}
-
-export interface ReasonWithImage {
-  id: number;
-  text: string;
-  imageUrl: string;
-}
+import { GalleryImage } from '../model/gallery-image';
+import { ReasonWithImage } from '../model/reason-with-image';
 
 @Injectable({
   providedIn: 'root',

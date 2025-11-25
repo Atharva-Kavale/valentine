@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Reason } from '../model/reason';
+import { ReasonWithImage } from '../model/reason-with-image';
 import { LocalStorageService } from './local-storage.service';
+import { HttpService } from './http.service';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReasonService {
-  private readonly reasons: Reason[] = [
+  // Fallback reasons with placeholders - used if backend is unavailable
+  private readonly fallbackReasons: Reason[] = [
     {
       id: 1,
       text: 'तुझं गोड हसणं 😍  I always like to see you smile. I know now you will think that i am the one who makes you cry ik. But i alwys thrive to see you smile. Keep smiling always',
@@ -54,7 +59,12 @@ export class ReasonService {
     },
   ];
 
-  constructor(private localStorageService: LocalStorageService) {}
+  private reasons: Reason[] = this.fallbackReasons;
+
+  constructor(
+    private localStorageService: LocalStorageService,
+    private httpService: HttpService
+  ) {}
 
   getReason(id: number): Reason | undefined {
     return this.reasons.find((reason) => reason.id === id);
@@ -62,6 +72,50 @@ export class ReasonService {
 
   getAllReasons(): Reason[] {
     return this.reasons;
+  }
+
+  /**
+   * Fetch reasons from backend API
+   * This will update the internal reasons array
+   */
+  fetchReasonsFromBackend(): Observable<Reason[]> {
+    return this.httpService.getReasons().pipe(
+      map((backendReasons: ReasonWithImage[]) => {
+        // Convert backend format to internal Reason format
+        const convertedReasons: Reason[] = backendReasons.map((r) => ({
+          id: r.id,
+          text: r.text,
+          image: r.imageUrl,
+        }));
+        // Update internal reasons
+        this.reasons = convertedReasons;
+        return convertedReasons;
+      }),
+      catchError((error) => {
+        console.error('Failed to fetch reasons from backend:', error);
+        // Return fallback reasons on error
+        this.reasons = this.fallbackReasons;
+        return of(this.fallbackReasons);
+      })
+    );
+  }
+
+  /**
+   * Fetch a single reason from backend by ID
+   */
+  fetchReasonById(id: number): Observable<Reason | undefined> {
+    return this.httpService.getReasonById(id).pipe(
+      map((backendReason: ReasonWithImage) => ({
+        id: backendReason.id,
+        text: backendReason.text,
+        image: backendReason.imageUrl,
+      })),
+      catchError((error) => {
+        console.error(`Failed to fetch reason ${id} from backend:`, error);
+        // Return reason from local fallback on error
+        return of(this.fallbackReasons.find((r) => r.id === id));
+      })
+    );
   }
 
   isUnlocked(reason: Reason): boolean {

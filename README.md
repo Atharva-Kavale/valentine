@@ -62,14 +62,17 @@ src/
 │   │   └── gallery/             # Photo gallery with lightbox
 │   ├── service/
 │   │   ├── reason.service.ts          # Manages love notes & unlocking
-│   │   ├── gallery.service.ts         # Handles photo management (placeholders)
+│   │   ├── gallery.service.ts         # Handles photo management
+│   │   ├── http.service.ts            # Backend API integration
 │   │   ├── audio.service.ts           # Background music (optional)
 │   │   ├── cursor.service.ts          # Custom cursor effects
 │   │   └── local-storage.service.ts   # Local storage management
 │   ├── model/
-│   │   ├── reason.ts            # Love note model
-│   │   ├── heart.ts             # Heart animation model
-│   │   └── song.ts              # Song model
+│   │   ├── reason.ts              # Love note model
+│   │   ├── reason-with-image.ts   # Backend reason response model
+│   │   ├── gallery-image.ts       # Gallery image model
+│   │   ├── heart.ts               # Heart animation model
+│   │   └── song.ts                # Song model
 │   └── guard/
 │       └── reason.guard.ts      # Route protection
 ```
@@ -150,17 +153,88 @@ The app includes a custom heart cursor effect—toggle in [cursor.service.ts](sr
 
 ## 🔌 API Integration
 
-The application is designed to work with a backend API. Configure your API endpoints in the service files:
+The application includes a complete HTTP service for backend integration. The API URL is configured in environment files.
 
-- **[reason.service.ts](src/app/service/reason.service.ts)** - Love notes and messages API
-- **[gallery.service.ts](src/app/service/gallery.service.ts)** - Photo gallery API
-- **[audio.service.ts](src/app/service/audio.service.ts)** - Music/audio management
+### Configuration
 
-The backend should handle:
-- User authentication
-- Photo storage and retrieval
-- Message/reason management
-- Session persistence
+Update the API URL in environment files:
+
+**Development** - [src/environments/environment.ts](src/environments/environment.ts):
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api',
+};
+```
+
+**Production** - [src/environments/environment.prod.ts](src/environments/environment.prod.ts):
+```typescript
+export const environment = {
+  production: true,
+  apiUrl: 'https://your-backend-api.com/api',
+};
+```
+
+### API Endpoints
+
+The [http.service.ts](src/app/service/http.service.ts) expects these backend endpoints:
+
+#### Gallery Endpoints
+- `GET /api/gallery/images` - Fetch all gallery images
+  ```typescript
+  Response: GalleryImage[]
+  {
+    id: number;
+    url: string;
+    alt?: string;
+  }
+  ```
+
+#### Reasons Endpoints
+- `GET /api/reasons` - Fetch all reasons with images
+  ```typescript
+  Response: ReasonWithImage[]
+  {
+    id: number;
+    text: string;
+    imageUrl: string;
+  }
+  ```
+
+- `GET /api/reasons/:id` - Fetch a specific reason by ID
+  ```typescript
+  Response: ReasonWithImage
+  {
+    id: number;
+    text: string;
+    imageUrl: string;
+  }
+  ```
+
+### Using the HTTP Service
+
+The services automatically fall back to placeholder data if the backend is unavailable:
+
+**Gallery Service:**
+```typescript
+// Fetch images from backend
+this.galleryService.fetchImagesFromBackend().subscribe(images => {
+  console.log('Gallery images:', images);
+});
+```
+
+**Reason Service:**
+```typescript
+// Fetch all reasons from backend
+this.reasonService.fetchReasonsFromBackend().subscribe(reasons => {
+  console.log('Reasons:', reasons);
+});
+
+// Fetch single reason by ID
+this.reasonService.fetchReasonById(1).subscribe(reason => {
+  console.log('Reason:', reason);
+});
+```
 
 ## 💡 Pro Tips
 
