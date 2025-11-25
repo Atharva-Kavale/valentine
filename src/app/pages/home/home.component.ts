@@ -61,8 +61,4 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.router.navigate(['/reason', reason.id]);
     }
   }
-
-  trackByReasonId(_index: number, reason: Reason): number {
-    return reason.id;
-  }
 }

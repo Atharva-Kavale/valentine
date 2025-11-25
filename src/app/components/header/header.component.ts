@@ -55,8 +55,4 @@ export class HeaderComponent {
   onSongSelect(song: Song): void {
     this.songSelect.emit(song);
   }
-
-  trackBySongId(_index: number, song: Song): number {
-    return song.id;
-  }
 }

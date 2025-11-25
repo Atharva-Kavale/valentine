@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { GalleryImage } from '../model/gallery-image';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -27,41 +27,75 @@ export class GalleryService {
     'placeholder.svg',
   ];
 
+  // Cache for gallery items
+  private galleryItemsCache$ = new BehaviorSubject<GalleryImage[]>([]);
+  private isLoaded = false;
+
   constructor(private httpService: HttpService) {}
 
   /**
-   * Get all images - returns placeholder for now
-   * Use fetchImagesFromBackend() to get real images
+   * Initialize and fetch gallery data from backend
+   * Call this on app initialization
+   */
+  initializeGallery(): void {
+    if (!this.isLoaded) {
+      this.httpService
+        .getGalleryImages()
+        .pipe(
+          tap((items) => {
+            this.galleryItemsCache$.next(items);
+            this.isLoaded = true;
+            console.log('Gallery items loaded and cached:', items.length);
+          }),
+          catchError((error) => {
+            console.error('Failed to fetch gallery images:', error);
+            this.isLoaded = false;
+            return of([]);
+          }),
+        )
+        .subscribe();
+    }
+  }
+
+  /**
+   * Get cached gallery items as Observable
+   */
+  getGalleryItems(): Observable<GalleryImage[]> {
+    return this.galleryItemsCache$.asObservable();
+  }
+
+  /**
+   * Get cached gallery items (synchronous)
+   */
+  getGalleryItemsSync(): GalleryImage[] {
+    return this.galleryItemsCache$.value;
+  }
+
+  /**
+   * Get all images - returns placeholder or cached URLs
    */
   getAllImages(): string[] {
+    const cachedItems = this.galleryItemsCache$.value;
+    if (cachedItems.length > 0) {
+      // Return URLs from images only (not videos)
+      return cachedItems
+        .filter((item) => item.type === 'image')
+        .map((item) => item.url);
+    }
     return this.placeholderImages;
   }
 
   /**
-   * Fetch images from backend API
-   * Returns Observable with image URLs
+   * Get all media items (images and videos)
    */
-  fetchImagesFromBackend(): Observable<string[]> {
-    return this.httpService.getGalleryImages().pipe(
-      map((images: GalleryImage[]) => images.map((img) => img.url)),
-      catchError((error) => {
-        console.error('Failed to fetch gallery images:', error);
-        // Return placeholder images as fallback
-        return of(this.placeholderImages);
-      })
-    );
+  getAllMediaItems(): GalleryImage[] {
+    return this.galleryItemsCache$.value;
   }
 
   /**
-   * Fetch images with full metadata
+   * Check if gallery data is loaded
    */
-  fetchImagesWithMetadata(): Observable<GalleryImage[]> {
-    return this.httpService.getGalleryImages().pipe(
-      catchError((error) => {
-        console.error('Failed to fetch gallery images:', error);
-        // Return empty array or placeholder data as fallback
-        return of([]);
-      })
-    );
+  isGalleryLoaded(): boolean {
+    return this.isLoaded;
   }
 }

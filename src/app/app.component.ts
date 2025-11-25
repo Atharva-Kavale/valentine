@@ -8,6 +8,7 @@ import {
 import { RouterOutlet } from '@angular/router';
 import { AudioService } from './service/audio.service';
 import { CursorService } from './service/cursor.service';
+import { GalleryService } from './service/gallery.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private audioService: AudioService,
     private cursorService: CursorService,
+    private galleryService: GalleryService,
     private renderer: Renderer2,
   ) {
     this.isPlaying$ = this.audioService.isPlaying$;
@@ -48,6 +50,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.cursorService.initializeTrail();
     this.playMusic();
+
+    // Initialize gallery data on app load
+    this.galleryService.initializeGallery();
 
     // Disable scroll when music is not playing
     this.isPlaying$.pipe(takeUntil(this.destroy$)).subscribe((isPlaying) => {

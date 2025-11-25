@@ -84,6 +84,7 @@ src/
 ### Backend Integration
 
 The app is configured to work with a backend server that will:
+
 - Serve photos and media content securely
 - Manage love notes and messages
 - Handle authentication and user sessions
@@ -160,18 +161,20 @@ The application includes a complete HTTP service for backend integration. The AP
 Update the API URL in environment files:
 
 **Development** - [src/environments/environment.ts](src/environments/environment.ts):
+
 ```typescript
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api',
+  apiUrl: "http://localhost:3000/api",
 };
 ```
 
 **Production** - [src/environments/environment.prod.ts](src/environments/environment.prod.ts):
+
 ```typescript
 export const environment = {
   production: true,
-  apiUrl: 'https://your-backend-api.com/api',
+  apiUrl: "https://your-backend-api.com/api",
 };
 ```
 
@@ -180,6 +183,7 @@ export const environment = {
 The [http.service.ts](src/app/service/http.service.ts) expects these backend endpoints:
 
 #### Gallery Endpoints
+
 - `GET /api/gallery/images` - Fetch all gallery images
   ```typescript
   Response: GalleryImage[]
@@ -191,7 +195,9 @@ The [http.service.ts](src/app/service/http.service.ts) expects these backend end
   ```
 
 #### Reasons Endpoints
+
 - `GET /api/reasons` - Fetch all reasons with images
+
   ```typescript
   Response: ReasonWithImage[]
   {
@@ -203,7 +209,7 @@ The [http.service.ts](src/app/service/http.service.ts) expects these backend end
 
 - `GET /api/reasons/:id` - Fetch a specific reason by ID
   ```typescript
-  Response: ReasonWithImage
+  Response: ReasonWithImage;
   {
     id: number;
     text: string;
@@ -216,23 +222,25 @@ The [http.service.ts](src/app/service/http.service.ts) expects these backend end
 The services automatically fall back to placeholder data if the backend is unavailable:
 
 **Gallery Service:**
+
 ```typescript
 // Fetch images from backend
-this.galleryService.fetchImagesFromBackend().subscribe(images => {
-  console.log('Gallery images:', images);
+this.galleryService.fetchImagesFromBackend().subscribe((images) => {
+  console.log("Gallery images:", images);
 });
 ```
 
 **Reason Service:**
+
 ```typescript
 // Fetch all reasons from backend
-this.reasonService.fetchReasonsFromBackend().subscribe(reasons => {
-  console.log('Reasons:', reasons);
+this.reasonService.fetchReasonsFromBackend().subscribe((reasons) => {
+  console.log("Reasons:", reasons);
 });
 
 // Fetch single reason by ID
-this.reasonService.fetchReasonById(1).subscribe(reason => {
-  console.log('Reason:', reason);
+this.reasonService.fetchReasonById(1).subscribe((reason) => {
+  console.log("Reason:", reason);
 });
 ```
 

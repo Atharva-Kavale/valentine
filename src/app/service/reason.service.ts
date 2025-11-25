@@ -63,7 +63,7 @@ export class ReasonService {
 
   constructor(
     private localStorageService: LocalStorageService,
-    private httpService: HttpService
+    private httpService: HttpService,
   ) {}
 
   getReason(id: number): Reason | undefined {
@@ -96,7 +96,7 @@ export class ReasonService {
         // Return fallback reasons on error
         this.reasons = this.fallbackReasons;
         return of(this.fallbackReasons);
-      })
+      }),
     );
   }
 
@@ -114,7 +114,7 @@ export class ReasonService {
         console.error(`Failed to fetch reason ${id} from backend:`, error);
         // Return reason from local fallback on error
         return of(this.fallbackReasons.find((r) => r.id === id));
-      })
+      }),
     );
   }
 
