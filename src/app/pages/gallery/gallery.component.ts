@@ -4,8 +4,6 @@ import {
   HostListener,
   Renderer2,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  OnInit,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GalleryService } from '../../service/gallery.service';
@@ -18,7 +16,7 @@ import { Heart } from '../../model/heart';
   styleUrl: './gallery.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GalleryComponent implements OnInit {
+export class GalleryComponent {
   photos: string[];
   hearts: Heart[] = [];
   private originalOverflow: string = '';
@@ -27,19 +25,9 @@ export class GalleryComponent implements OnInit {
   constructor(
     private imageService: GalleryService,
     private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
   ) {
     this.photos = this.imageService.getAllImages();
     this.preCreateHearts();
-  }
-
-  async ngOnInit(): Promise<void> {
-    // Preload images into cache
-    await this.imageService.preloadImages();
-    // Get cached images
-    this.photos = this.imageService.getCachedImages();
-    // Trigger change detection to update view
-    this.cdr.markForCheck();
   }
 
   selectedPhoto: string | null = null;

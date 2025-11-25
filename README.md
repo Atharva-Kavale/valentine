@@ -46,6 +46,7 @@ npm start
 💾 Local Storage for persistence
 ⚡ OnPush Change Detection for performance
 🎭 Dynamic animations with pure CSS
+🔌 Backend API integration ready
 ```
 
 ## 📁 Project Structure
@@ -59,33 +60,31 @@ src/
 │   │   ├── home/                # Main page with love boxes
 │   │   ├── reason/              # Individual reason display
 │   │   └── gallery/             # Photo gallery with lightbox
-│   ├── services/
-│   │   ├── reason.service.ts    # Manages love notes & unlocking
-│   │   ├── gallery.service.ts   # Handles photo management
-│   │   ├── audio.service.ts     # Background music (optional)
-│   │   └── cursor.service.ts    # Custom cursor effects
-│   └── models/
-│       ├── reason.ts            # Love note model
-│       └── heart.ts             # Heart animation model
+│   ├── service/
+│   │   ├── reason.service.ts          # Manages love notes & unlocking
+│   │   ├── gallery.service.ts         # Handles photo management (placeholders)
+│   │   ├── audio.service.ts           # Background music (optional)
+│   │   ├── cursor.service.ts          # Custom cursor effects
+│   │   └── local-storage.service.ts   # Local storage management
+│   ├── model/
+│   │   ├── reason.ts            # Love note model
+│   │   ├── heart.ts             # Heart animation model
+│   │   └── song.ts              # Song model
+│   └── guard/
+│       └── reason.guard.ts      # Route protection
 ```
 
 ## 🔐 Privacy & Security
 
-**Important**: This app is designed with privacy in mind. Your personal photos are never committed to Git!
+**Important**: This app is designed with privacy in mind. The application is built to integrate with a backend API for secure data management.
 
-### Recommended Setup for Private Photos:
+### Backend Integration
 
-1. **Option A: Cloud CDN** (Easiest)
-   - Upload photos to [Cloudinary](https://cloudinary.com) or [Imgur](https://imgur.com)
-   - Add URLs to [gallery.service.ts](src/app/service/gallery.service.ts)
-   - Your images stay private, load fast, and work everywhere
-
-2. **Option B: Git-Ignored Assets**
-   - Place photos in `/src/assets/private/` (already in `.gitignore`)
-   - Use build scripts to encode/deploy
-   - Perfect for self-hosting
-
-[See detailed privacy guide here](#keeping-photos-private)
+The app is configured to work with a backend server that will:
+- Serve photos and media content securely
+- Manage love notes and messages
+- Handle authentication and user sessions
+- Store data persistently
 
 ## 🎨 Customization
 
@@ -110,7 +109,7 @@ Modify [local-storage.service.ts](src/app/service/local-storage.service.ts) to c
 
 ### Theme Customization
 
-The app uses Tailwind CSS—customize colors in [tailwind.config.js](tailwind.config.js) or update component styles.
+The app uses Tailwind CSS—customize colors in component styles or Angular configuration.
 
 ## 🛠️ Build & Deploy
 
@@ -149,35 +148,19 @@ Uncomment audio code in components to add romantic background music (recommended
 
 The app includes a custom heart cursor effect—toggle in [cursor.service.ts](src/app/service/cursor.service.ts).
 
-## 📸 Keeping Photos Private
+## 🔌 API Integration
 
-Your intimate moments should stay private. Here's how:
+The application is designed to work with a backend API. Configure your API endpoints in the service files:
 
-### .gitignore Configuration
+- **[reason.service.ts](src/app/service/reason.service.ts)** - Love notes and messages API
+- **[gallery.service.ts](src/app/service/gallery.service.ts)** - Photo gallery API
+- **[audio.service.ts](src/app/service/audio.service.ts)** - Music/audio management
 
-```gitignore
-# Already configured in this project
-/src/assets/private/
-/public/private/
-private-images.json
-```
-
-### Using Cloud Storage (Recommended)
-
-1. **Create a free [Cloudinary](https://cloudinary.com) account**
-2. **Upload your photos**
-3. **Copy the URLs**
-4. **Update [gallery.service.ts](src/app/service/gallery.service.ts)**:
-
-```typescript
-private images: string[] = [
-  'https://res.cloudinary.com/your-cloud/image/upload/photo1.jpg',
-  'https://res.cloudinary.com/your-cloud/image/upload/photo2.jpg',
-  // More photos...
-];
-```
-
-5. **Commit & Deploy** - Only URLs are in the code, never the actual images!
+The backend should handle:
+- User authentication
+- Photo storage and retrieval
+- Message/reason management
+- Session persistence
 
 ## 💡 Pro Tips
 
