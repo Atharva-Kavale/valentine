@@ -25,11 +25,26 @@ export class HomeComponent implements OnInit, OnDestroy {
     private reasonsService: ReasonService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-  ) {
-    this.reasons = this.reasonsService.getAllReasons();
-  }
+  ) {}
 
   ngOnInit(): void {
+    // Fetch the count from backend and generate reason boxes dynamically
+    this.reasonsService.fetchReasonsCount().subscribe({
+      next: (count) => {
+        // Generate reason boxes based on the count from API
+        this.reasons = Array.from({ length: count }, (_, index) => ({
+          id: index + 1,
+          text: '', // Text will be fetched when box is opened
+          image: '', // Image will be fetched when box is opened
+        }));
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        console.error('Error loading reasons count:', error);
+        this.cdr.markForCheck();
+      },
+    });
+
     this.countdownInterval = setInterval(() => {
       this.cdr.markForCheck();
     }, 1000);

@@ -1,20 +1,15 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { ReasonService } from '../service/reason.service';
+import { LocalStorageService } from '../service/local-storage.service';
 import { inject } from '@angular/core';
 
 export const reasonGuard: CanActivateFn = (route, state) => {
-  const reasonsService = inject(ReasonService);
+  const localStorageService = inject(LocalStorageService);
   const router = inject(Router);
 
   const reasonId = Number(route.paramMap.get('id'));
-  const reason = reasonsService.getReason(reasonId);
 
-  if (!reason) {
-    router.navigate(['/']);
-    return false;
-  }
-
-  const isUnlocked = reasonsService.isUnlocked(reason);
+  // Check if the reason box is unlocked
+  const isUnlocked = localStorageService.isBoxUnlocked(reasonId);
 
   if (!isUnlocked) {
     router.navigate(['/']);

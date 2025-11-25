@@ -21,16 +21,16 @@ export class HttpService {
   }
 
   /**
-   * Fetch all reasons with images from backend
-   */
-  getReasons(): Observable<ReasonWithImage[]> {
-    return this.http.get<ReasonWithImage[]>(`${this.apiUrl}/reasons`);
-  }
-
-  /**
    * Fetch a single reason by ID
    */
   getReasonById(id: number): Observable<ReasonWithImage> {
     return this.http.get<ReasonWithImage>(`${this.apiUrl}/reasons/${id}`);
+  }
+
+  /**
+   * Fetch the total count of reasons
+   */
+  getReasonsCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.apiUrl}/reasons/count`);
   }
 }
