@@ -9,7 +9,7 @@ import { RouterOutlet } from '@angular/router';
 import { AudioService } from './service/audio.service';
 import { CursorService } from './service/cursor.service';
 import { GalleryService } from './service/gallery.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil, combineLatest, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { Song } from './model/song';
@@ -43,8 +43,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isMuted$ = this.audioService.isMuted$;
     this.volume$ = this.audioService.volume$;
     this.currentSong$ = this.audioService.currentSong$;
-    this.isLoading$ = this.audioService.isLoading$;
     this.songs = this.audioService.getSongs();
+
+    // Combine both loading states - show loader until both are complete
+    this.isLoading$ = combineLatest([
+      this.audioService.isLoading$,
+      this.galleryService.isLoading$,
+    ]).pipe(
+      map(([audioLoading, galleryLoading]) => audioLoading || galleryLoading),
+    );
   }
 
   ngOnInit() {

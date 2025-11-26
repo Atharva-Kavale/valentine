@@ -3,7 +3,7 @@ import { formatTimestampForDisplay } from '../utils/timezone.util';
 
 @Pipe({
   name: 'istDate',
-  standalone: true
+  standalone: true,
 })
 export class IstDatePipe implements PipeTransform {
   transform(value: string | Date | null | undefined): string {

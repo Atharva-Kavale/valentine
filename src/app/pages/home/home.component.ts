@@ -10,6 +10,7 @@ import { ReasonService } from '../../service/reason.service';
 import { LocalStorageService } from '../../service/local-storage.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,7 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent implements OnInit, OnDestroy {
   reasons: Reason[] = [];
   private countdownInterval: any;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private reasonsService: ReasonService,
@@ -31,24 +33,27 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Fetch the count from backend and generate reason boxes dynamically
-    this.reasonsService.fetchReasonsCount().subscribe({
-      next: (count) => {
-        // Initialize localStorage with the dynamic count from backend
-        this.localStorageService.initializeStorageWithCount(count);
+    this.reasonsService
+      .fetchReasonsCount()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (count) => {
+          // Initialize localStorage with the dynamic count from backend
+          this.localStorageService.initializeStorageWithCount(count);
 
-        // Generate reason boxes based on the count from API
-        this.reasons = Array.from({ length: count }, (_, index) => ({
-          id: index + 1,
-          text: '', // Text will be fetched when box is opened
-          image: '', // Image will be fetched when box is opened
-        }));
-        this.cdr.markForCheck();
-      },
-      error: (error) => {
-        console.error('Error loading reasons count:', error);
-        this.cdr.markForCheck();
-      },
-    });
+          // Generate reason boxes based on the count from API
+          this.reasons = Array.from({ length: count }, (_, index) => ({
+            id: index + 1,
+            text: '', // Text will be fetched when box is opened
+            image: '', // Image will be fetched when box is opened
+          }));
+          this.cdr.markForCheck();
+        },
+        error: (error) => {
+          console.error('Error loading reasons count:', error);
+          this.cdr.markForCheck();
+        },
+      });
 
     this.countdownInterval = setInterval(() => {
       this.cdr.markForCheck();
@@ -56,6 +61,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
     }

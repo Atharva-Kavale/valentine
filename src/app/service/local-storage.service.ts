@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { getCurrentTimestamp, addHoursToNow, isInPast, getTimeRemaining } from '../utils/timezone.util';
+import {
+  getCurrentTimestamp,
+  addHoursToNow,
+  isInPast,
+  getTimeRemaining,
+} from '../utils/timezone.util';
 
 export interface BoxState {
   boxId: number;

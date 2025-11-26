@@ -5,6 +5,7 @@ import {
   Renderer2,
   ChangeDetectionStrategy,
   OnInit,
+  OnDestroy,
   ChangeDetectorRef,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -12,6 +13,7 @@ import { GalleryService } from '../../service/gallery.service';
 import { AudioService } from '../../service/audio.service';
 import { GalleryImage } from '../../model/gallery-image';
 import { Heart } from '../../model/heart';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-gallery',
@@ -20,7 +22,7 @@ import { Heart } from '../../model/heart';
   styleUrl: './gallery.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GalleryComponent implements OnInit {
+export class GalleryComponent implements OnInit, OnDestroy {
   galleryItems: GalleryImage[] = [];
   hearts: Heart[] = [];
   private originalOverflow: string = '';
@@ -31,6 +33,7 @@ export class GalleryComponent implements OnInit {
 
   // Track original volume before muting for video
   private originalVolume: number = 0;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private imageService: GalleryService,
@@ -43,12 +46,20 @@ export class GalleryComponent implements OnInit {
 
   ngOnInit(): void {
     // Subscribe to cached gallery items
-    this.imageService.getGalleryItems().subscribe((items) => {
-      this.galleryItems = items;
+    this.imageService
+      .getGalleryItems()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((items) => {
+        this.galleryItems = items;
 
-      // Trigger change detection
-      this.cdr.markForCheck();
-    });
+        // Trigger change detection
+        this.cdr.markForCheck();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   isVideo(item: GalleryImage): boolean {

@@ -20,7 +20,10 @@ export function getCurrentISTTime(): Date {
  * @param formatString - Format string (e.g., 'yyyy-MM-dd HH:mm:ss')
  * @returns Formatted date string in IST
  */
-export function formatInIST(date: Date | string | number, formatString: string = 'yyyy-MM-dd HH:mm:ss'): string {
+export function formatInIST(
+  date: Date | string | number,
+  formatString: string = 'yyyy-MM-dd HH:mm:ss',
+): string {
   return formatInTimeZone(date, IST_TIMEZONE, formatString);
 }
 
@@ -29,7 +32,9 @@ export function formatInIST(date: Date | string | number, formatString: string =
  * @param date - Date to convert (defaults to current time)
  * @returns ISO 8601 string with IST offset (e.g., '2025-11-26T12:00:00+05:30')
  */
-export function getISTISOString(date: Date | string | number = new Date()): string {
+export function getISTISOString(
+  date: Date | string | number = new Date(),
+): string {
   return formatInTimeZone(date, IST_TIMEZONE, "yyyy-MM-dd'T'HH:mm:ssXXX");
 }
 
@@ -99,5 +104,5 @@ export function isInPast(timestamp: number): boolean {
  * @returns Timestamp in milliseconds
  */
 export function addHoursToNow(hours: number): number {
-  return getCurrentTimestamp() + (hours * 60 * 60 * 1000);
+  return getCurrentTimestamp() + hours * 60 * 60 * 1000;
 }

@@ -43,7 +43,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initializeGame();
-    this.loadHighscores();
   }
 
   ngOnDestroy(): void {
@@ -202,5 +201,8 @@ export class GameComponent implements OnInit, OnDestroy {
 
   toggleHighscores(): void {
     this.showHighscores = !this.showHighscores;
+    if (this.showHighscores && this.highscores.length === 0) {
+      this.loadHighscores();
+    }
   }
 }
