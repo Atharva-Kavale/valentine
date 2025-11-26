@@ -5,6 +5,7 @@
 A romantic web application that turns love into an interactive experience. Think of it as a digital love letter that unfolds over time, revealing heartfelt messages and cherished memories through an elegant, timed unlock mechanism.
 
 **Built with:**
+
 - ❤️ Angular 19
 - 🎨 Tailwind CSS 4
 - 💖 Love and dedication
@@ -113,6 +114,7 @@ _This section is for developers who want to understand the technical details of 
 ### Tech Stack
 
 Built with:
+
 - Angular 19 (Standalone Components)
 - Tailwind CSS 4
 - TypeScript
@@ -216,6 +218,7 @@ The app includes a custom heart cursor effect—toggle in [cursor.service.ts](sr
 #### Memory Match Game
 
 The app includes a fully functional memory matching card game that:
+
 - Randomly selects 6 images from your gallery
 - Creates 12 cards (6 pairs) shuffled randomly
 - Tracks moves and matches
@@ -292,6 +295,7 @@ The [http.service.ts](src/app/service/http.service.ts) expects these backend end
 **Game/Highscore Endpoints**
 
 - `GET /api/highscores` - Fetch all highscores for the memory game
+
   ```typescript
   Response: Highscore[]
   {
@@ -303,6 +307,7 @@ The [http.service.ts](src/app/service/http.service.ts) expects these backend end
   ```
 
 - `POST /api/highscores` - Submit a new highscore
+
   ```typescript
   Request Body:
   {
