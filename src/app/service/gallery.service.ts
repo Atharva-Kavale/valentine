@@ -8,25 +8,6 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class GalleryService {
-  // Placeholder images - fallback if backend is unavailable
-  private readonly placeholderImages: string[] = [
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-    'placeholder.svg',
-  ];
-
   // Cache for gallery items
   private galleryItemsCache$ = new BehaviorSubject<GalleryImage[]>([]);
   private isLoaded = false;
@@ -64,37 +45,9 @@ export class GalleryService {
   }
 
   /**
-   * Get cached gallery items (synchronous)
-   */
-  getGalleryItemsSync(): GalleryImage[] {
-    return this.galleryItemsCache$.value;
-  }
-
-  /**
-   * Get all images - returns placeholder or cached URLs
-   */
-  getAllImages(): string[] {
-    const cachedItems = this.galleryItemsCache$.value;
-    if (cachedItems.length > 0) {
-      // Return URLs from images only (not videos)
-      return cachedItems
-        .filter((item) => item.type === 'image')
-        .map((item) => item.url);
-    }
-    return this.placeholderImages;
-  }
-
-  /**
    * Get all media items (images and videos)
    */
   getAllMediaItems(): GalleryImage[] {
     return this.galleryItemsCache$.value;
-  }
-
-  /**
-   * Check if gallery data is loaded
-   */
-  isGalleryLoaded(): boolean {
-    return this.isLoaded;
   }
 }

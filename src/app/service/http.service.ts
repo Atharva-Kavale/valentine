@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { GalleryImage } from '../model/gallery-image';
 import { ReasonWithImage } from '../model/reason-with-image';
+import { Highscore } from '../model/highscore';
 
 @Injectable({
   providedIn: 'root',
@@ -32,5 +33,22 @@ export class HttpService {
    */
   getReasonsCount(): Observable<{ count: number }> {
     return this.http.get<{ count: number }>(`${this.apiUrl}/reasons/count`);
+  }
+
+  /**
+   * Fetch all highscores
+   */
+  getHighscores(): Observable<Highscore[]> {
+    return this.http.get<Highscore[]>(`${this.apiUrl}/highscores`);
+  }
+
+  /**
+   * Submit a new highscore
+   */
+  addHighscore(playerName: string, moves: number): Observable<{ message: string; score: Highscore }> {
+    return this.http.post<{ message: string; score: Highscore }>(`${this.apiUrl}/highscores`, {
+      playerName,
+      moves,
+    });
   }
 }

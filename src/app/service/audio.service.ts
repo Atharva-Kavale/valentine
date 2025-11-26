@@ -46,6 +46,11 @@ export class AudioService {
     this.audio.volume = savedVolume;
     this.volumeSubject.next(savedVolume);
 
+    // Initialize muted state based on volume
+    const isMuted = savedVolume === 0;
+    this.audio.muted = isMuted;
+    this.isMutedSubject.next(isMuted);
+
     // Load saved song from localStorage or default to first song
     const savedSong = this.loadSavedSong();
     this.currentSongSubject.next(savedSong);
@@ -160,13 +165,5 @@ export class AudioService {
 
   getVolume(): number {
     return this.audio.volume;
-  }
-
-  increaseVolume(step: number = 0.1) {
-    this.setVolume(this.audio.volume + step);
-  }
-
-  decreaseVolume(step: number = 0.1) {
-    this.setVolume(this.audio.volume - step);
   }
 }

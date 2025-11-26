@@ -15,6 +15,11 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'game',
+    loadComponent: () =>
+      import('./pages/game/game.component').then((m) => m.GameComponent),
+  },
+  {
     path: 'reason/:id',
     loadComponent: () =>
       import('./pages/reason/reason.component').then((m) => m.ReasonComponent),

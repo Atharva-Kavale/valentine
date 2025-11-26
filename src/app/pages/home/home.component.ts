@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Reason } from '../../model/reason';
 import { ReasonService } from '../../service/reason.service';
+import { LocalStorageService } from '../../service/local-storage.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private reasonsService: ReasonService,
+    private localStorageService: LocalStorageService,
     private router: Router,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -31,6 +33,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     // Fetch the count from backend and generate reason boxes dynamically
     this.reasonsService.fetchReasonsCount().subscribe({
       next: (count) => {
+        // Initialize localStorage with the dynamic count from backend
+        this.localStorageService.initializeStorageWithCount(count);
+
         // Generate reason boxes based on the count from API
         this.reasons = Array.from({ length: count }, (_, index) => ({
           id: index + 1,

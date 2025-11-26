@@ -29,6 +29,13 @@
           >
             Gallery
           </a>
+          <a
+            routerLink="/game"
+            routerLinkActive="text-white font-semibold underline decoration-2 underline-offset-4"
+            class="hover:text-love-100 px-2 py-2 text-sm transition-colors sm:px-4 sm:text-lg"
+          >
+            Game
+          </a>
         </nav>
 
         <div class="flex items-center space-x-2">
@@ -40,7 +47,7 @@
                 class="hover:text-love-200 p-1 transition-colors sm:p-2"
               >
                 <span class="text-xl sm:text-2xl" aria-hidden="true">
-                  {{ (isMuted$ | async) ? "🔇" : "🔊" }}
+                  {{ ((isMuted$ | async) || (volume$ | async) === 0) ? "🔇" : "🔊" }}
                 </span>
               </button>
 

@@ -15,19 +15,42 @@ export class LocalStorageService {
   private readonly AUDIO_SONG_KEY = 'valentine_selected_song';
   private readonly TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
 
-  constructor() {
-    this.initializeStorage();
-  }
+  constructor() {}
 
-  private initializeStorage(): void {
+  /**
+   * Initialize storage with dynamic count from backend
+   * This should be called after fetching the count from the API
+   */
+  initializeStorageWithCount(count: number): void {
     const stored = localStorage.getItem(this.STORAGE_KEY);
     if (!stored) {
-      const initialState: BoxState[] = Array.from({ length: 9 }, (_, i) => ({
+      const initialState: BoxState[] = Array.from({ length: count }, (_, i) => ({
         boxId: i + 1,
         openedAt: null,
         unlocksAt: i === 0 ? Date.now() : null,
       }));
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(initialState));
+    } else {
+      // Storage exists - check if we need to add/remove boxes based on new count
+      const existingStates: BoxState[] = JSON.parse(stored);
+
+      if (existingStates.length !== count) {
+        // Adjust the storage to match the new count
+        if (count > existingStates.length) {
+          // Add new boxes
+          for (let i = existingStates.length; i < count; i++) {
+            existingStates.push({
+              boxId: i + 1,
+              openedAt: null,
+              unlocksAt: null,
+            });
+          }
+        } else {
+          // Remove excess boxes
+          existingStates.splice(count);
+        }
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(existingStates));
+      }
     }
   }
 
@@ -39,8 +62,9 @@ export class LocalStorageService {
   getAllBoxStates(): BoxState[] {
     const stored = localStorage.getItem(this.STORAGE_KEY);
     if (!stored) {
-      this.initializeStorage();
-      return this.getAllBoxStates();
+      // Return empty array if not initialized yet
+      // Storage will be initialized when count is fetched from backend
+      return [];
     }
     return JSON.parse(stored);
   }
@@ -89,11 +113,6 @@ export class LocalStorageService {
 
     const remaining = unlockTime - Date.now();
     return remaining > 0 ? remaining : 0;
-  }
-
-  clearAllProgress(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
-    this.initializeStorage();
   }
 
   // Audio preference methods
