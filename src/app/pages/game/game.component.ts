@@ -57,18 +57,9 @@ export class GameComponent implements OnInit, OnDestroy {
         // Filter only images (not videos)
         const imageItems = images.filter((item) => item.type === 'image');
 
-        // Take 6 images, or use placeholder if less than 6
-        const selectedImages = imageItems.slice(0, 6);
-
-        // If less than 6 images, fill with placeholders
-        while (selectedImages.length < 6) {
-          selectedImages.push({
-            id: Math.random(),
-            url: '/placeholder.svg',
-            type: 'image',
-            alt: 'Placeholder',
-          });
-        }
+        // Randomly select 6 images
+        const shuffledImages = this.shuffleArray(imageItems);
+        const selectedImages = shuffledImages.slice(0, 6);
 
         // Create pairs of cards
         const cardPairs = selectedImages.flatMap((image, index) => [
