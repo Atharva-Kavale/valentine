@@ -24,11 +24,14 @@ export class LocalStorageService {
   initializeStorageWithCount(count: number): void {
     const stored = localStorage.getItem(this.STORAGE_KEY);
     if (!stored) {
-      const initialState: BoxState[] = Array.from({ length: count }, (_, i) => ({
-        boxId: i + 1,
-        openedAt: null,
-        unlocksAt: i === 0 ? Date.now() : null,
-      }));
+      const initialState: BoxState[] = Array.from(
+        { length: count },
+        (_, i) => ({
+          boxId: i + 1,
+          openedAt: null,
+          unlocksAt: i === 0 ? Date.now() : null,
+        }),
+      );
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(initialState));
     } else {
       // Storage exists - check if we need to add/remove boxes based on new count

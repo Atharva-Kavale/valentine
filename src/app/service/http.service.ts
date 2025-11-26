@@ -45,10 +45,16 @@ export class HttpService {
   /**
    * Submit a new highscore
    */
-  addHighscore(playerName: string, moves: number): Observable<{ message: string; score: Highscore }> {
-    return this.http.post<{ message: string; score: Highscore }>(`${this.apiUrl}/highscores`, {
-      playerName,
-      moves,
-    });
+  addHighscore(
+    playerName: string,
+    moves: number,
+  ): Observable<{ message: string; score: Highscore }> {
+    return this.http.post<{ message: string; score: Highscore }>(
+      `${this.apiUrl}/highscores`,
+      {
+        playerName,
+        moves,
+      },
+    );
   }
 }

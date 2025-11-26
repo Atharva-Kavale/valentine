@@ -47,7 +47,9 @@
                 class="hover:text-love-200 p-1 transition-colors sm:p-2"
               >
                 <span class="text-xl sm:text-2xl" aria-hidden="true">
-                  {{ ((isMuted$ | async) || (volume$ | async) === 0) ? "🔇" : "🔊" }}
+                  {{
+                    (isMuted$ | async) || (volume$ | async) === 0 ? "🔇" : "🔊"
+                  }}
                 </span>
               </button>
 

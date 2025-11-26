@@ -36,7 +36,7 @@ export class GameComponent implements OnInit, OnDestroy {
   constructor(
     private galleryService: GalleryService,
     private httpService: HttpService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -101,11 +101,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   flipCard(card: MemoryCard): void {
-    if (
-      this.isProcessing ||
-      card.isFlipped ||
-      card.isMatched
-    ) {
+    if (this.isProcessing || card.isFlipped || card.isMatched) {
       return;
     }
 
@@ -180,7 +176,11 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   submitHighscore(): void {
-    if (!this.playerName.trim() || this.isSubmittingScore || this.scoreSubmitted) {
+    if (
+      !this.playerName.trim() ||
+      this.isSubmittingScore ||
+      this.scoreSubmitted
+    ) {
       return;
     }
 
@@ -190,7 +190,7 @@ export class GameComponent implements OnInit, OnDestroy {
       .addHighscore(this.playerName, this.moves)
       .pipe(
         switchMap(() => this.httpService.getHighscores()),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe({
         next: (scores) => {

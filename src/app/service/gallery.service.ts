@@ -43,11 +43,4 @@ export class GalleryService {
   getGalleryItems(): Observable<GalleryImage[]> {
     return this.galleryItemsCache$.asObservable();
   }
-
-  /**
-   * Get all media items (images and videos)
-   */
-  getAllMediaItems(): GalleryImage[] {
-    return this.galleryItemsCache$.value;
-  }
 }
