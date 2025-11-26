@@ -17,12 +17,12 @@ export function getCurrentISTTime(): Date {
 /**
  * Format a date in IST timezone with a specific format
  * @param date - Date to format
- * @param formatString - Format string (e.g., 'yyyy-MM-dd HH:mm:ss')
+ * @param formatString - Format string (e.g., 'yyyy-MM-dd h:mm:ss a')
  * @returns Formatted date string in IST
  */
 export function formatInIST(
   date: Date | string | number,
-  formatString: string = 'yyyy-MM-dd HH:mm:ss',
+  formatString: string = 'yyyy-MM-dd h:mm:ss a',
 ): string {
   return formatInTimeZone(date, IST_TIMEZONE, formatString);
 }
@@ -64,11 +64,11 @@ export function getISTDateString(): string {
 }
 
 /**
- * Get full timestamp string for display (YYYY-MM-DD HH:mm:ss in IST)
+ * Get full timestamp string for display (YYYY-MM-DD h:mm:ss a in IST)
  * @returns Timestamp string in IST
  */
 export function getISTTimestamp(): string {
-  return formatInIST(new Date(), 'yyyy-MM-dd HH:mm:ss');
+  return formatInIST(new Date(), 'yyyy-MM-dd h:mm:ss a');
 }
 
 /**
