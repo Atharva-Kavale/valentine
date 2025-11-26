@@ -5,6 +5,7 @@ import { GalleryService } from '../../service/gallery.service';
 import { HttpService } from '../../service/http.service';
 import { Highscore } from '../../model/highscore';
 import { Subject, takeUntil, switchMap } from 'rxjs';
+import { IstDatePipe } from '../../pipes/ist-date.pipe';
 
 interface MemoryCard {
   id: string;
@@ -15,7 +16,7 @@ interface MemoryCard {
 
 @Component({
   selector: 'app-game',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, IstDatePipe],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
 })
@@ -31,6 +32,7 @@ export class GameComponent implements OnInit, OnDestroy {
   isSubmittingScore = false;
   scoreSubmitted = false;
   showResetNotification = false;
+  showHighscores = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -196,5 +198,9 @@ export class GameComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         },
       });
+  }
+
+  toggleHighscores(): void {
+    this.showHighscores = !this.showHighscores;
   }
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { getCurrentTimestamp, addHoursToNow, isInPast, getTimeRemaining } from '../utils/timezone.util';
 
 export interface BoxState {
   boxId: number;
@@ -13,7 +14,6 @@ export class LocalStorageService {
   private readonly STORAGE_KEY = 'valentine_box_progress';
   private readonly AUDIO_VOLUME_KEY = 'valentine_audio_volume';
   private readonly AUDIO_SONG_KEY = 'valentine_selected_song';
-  private readonly TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
 
   constructor() {}
 
@@ -29,7 +29,7 @@ export class LocalStorageService {
         (_, i) => ({
           boxId: i + 1,
           openedAt: null,
-          unlocksAt: i === 0 ? Date.now() : null,
+          unlocksAt: i === 0 ? getCurrentTimestamp() : null,
         }),
       );
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(initialState));
@@ -74,7 +74,7 @@ export class LocalStorageService {
 
   setBoxOpenedTime(boxId: number): void {
     const states = this.getAllBoxStates();
-    const currentTime = Date.now();
+    const currentTime = getCurrentTimestamp();
 
     const boxIndex = states.findIndex((state) => state.boxId === boxId);
     if (boxIndex !== -1) {
@@ -86,7 +86,7 @@ export class LocalStorageService {
           (state) => state.boxId === boxId + 1,
         );
         if (nextBoxIndex !== -1) {
-          states[nextBoxIndex].unlocksAt = currentTime + this.TWENTY_FOUR_HOURS;
+          states[nextBoxIndex].unlocksAt = addHoursToNow(24);
         }
 
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(states));
@@ -107,14 +107,14 @@ export class LocalStorageService {
 
     if (state.unlocksAt === null) return false;
 
-    return Date.now() >= state.unlocksAt;
+    return isInPast(state.unlocksAt);
   }
 
   getRemainingTime(boxId: number): number {
     const unlockTime = this.getNextUnlockTime(boxId);
     if (unlockTime === null) return Infinity;
 
-    const remaining = unlockTime - Date.now();
+    const remaining = getTimeRemaining(unlockTime);
     return remaining > 0 ? remaining : 0;
   }
 

@@ -30,6 +30,12 @@
       >
         🔄 Reset Game
       </button>
+      <button
+        (click)="toggleHighscores()"
+        class="bg-love-500 hover:bg-love-600 transform cursor-pointer rounded-lg px-6 py-3 font-semibold text-white shadow-md transition-all hover:scale-105"
+      >
+        🏆 Highscores
+      </button>
     </div>
 
     <!-- Reset Notification -->
@@ -163,7 +169,7 @@
                           {{ score.moves }}
                         </td>
                         <td class="text-love-400 px-3 py-3 text-xs">
-                          {{ score.timestamp | date: "short" }}
+                          {{ score.timestamp | istDate }}
                         </td>
                       </tr>
                     }
@@ -180,6 +186,78 @@
             class="bg-love-500 hover:bg-love-600 transform rounded-lg px-8 py-3 font-semibold text-white shadow-md transition-all hover:scale-105"
           >
             Play Again
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Highscores Modal -->
+    @if (showHighscores) {
+      <div
+        class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black p-4"
+        (click)="toggleHighscores()"
+      >
+        <div
+          class="my-8 w-full max-w-2xl rounded-2xl bg-white p-6 text-center shadow-2xl md:p-8"
+          (click)="$event.stopPropagation()"
+        >
+          <div class="mb-4 text-6xl">🏆</div>
+          <h2 class="text-love-600 mb-6 text-3xl font-bold">Top Scores</h2>
+
+          @if (highscores.length > 0) {
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse text-center">
+                <thead>
+                  <tr class="bg-love-100 text-love-700">
+                    <th class="rounded-tl-lg px-3 py-2">Rank</th>
+                    <th class="px-3 py-2">Player</th>
+                    <th class="px-3 py-2">Moves</th>
+                    <th class="rounded-tr-lg px-3 py-2">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (score of highscores; track score.id; let i = $index) {
+                    <tr
+                      class="border-love-100 hover:bg-love-50 border-b transition-colors"
+                    >
+                      <td class="px-3 py-3">
+                        @if (i === 0) {
+                          <span class="text-2xl">🥇</span>
+                        } @else if (i === 1) {
+                          <span class="text-2xl">🥈</span>
+                        } @else if (i === 2) {
+                          <span class="text-2xl">🥉</span>
+                        } @else {
+                          <span class="text-love-500 font-semibold">{{
+                            i + 1
+                          }}</span>
+                        }
+                      </td>
+                      <td class="text-love-700 px-3 py-3 font-medium">
+                        {{ score.playerName }}
+                      </td>
+                      <td class="text-love-600 px-3 py-3 font-bold">
+                        {{ score.moves }}
+                      </td>
+                      <td class="text-love-400 px-3 py-3 text-xs">
+                        {{ score.timestamp | istDate }}
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="text-love-400 mb-6 text-sm">
+              No scores yet. Be the first!
+            </p>
+          }
+
+          <button
+            (click)="toggleHighscores()"
+            class="bg-love-500 hover:bg-love-600 mt-6 transform rounded-lg px-8 py-3 font-semibold text-white shadow-md transition-all hover:scale-105"
+          >
+            Close
           </button>
         </div>
       </div>
