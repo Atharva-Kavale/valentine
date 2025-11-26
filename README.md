@@ -2,7 +2,13 @@
 
 > _"Every great love story deserves to be told in code."_
 
-A romantic Angular web application that turns love into an interactive experience. Think of it as a digital love letter that unfolds over time, revealing heartfelt messages and cherished memories through an elegant, timed unlock mechanism.
+A romantic web application that turns love into an interactive experience. Think of it as a digital love letter that unfolds over time, revealing heartfelt messages and cherished memories through an elegant, timed unlock mechanism.
+
+**Built with:**
+- ❤️ Angular 19
+- 🎨 Tailwind CSS 4
+- 💖 Love and dedication
+- ☕ Lots of coffee and late nights
 
 ## ✨ What Makes This Special?
 
@@ -11,13 +17,36 @@ This isn't just another web app—it's a journey through emotions, built with ca
 ### 🎁 Features
 
 - **🔐 Time-Locked Love Notes**: Nine beautiful boxes that unlock progressively, each revealing a heartfelt reason why you're loved
-- **📸 Photo Gallery**: A stunning gallery showcasing your favorite moments together (with privacy-first architecture)
+- **📸 Photo Gallery**: A stunning gallery showcasing your favorite moments together
+- **🎮 Memory Match Game**: Play a fun card-matching game using your special photos, with a leaderboard to track high scores
 - **⏱️ Real-time Countdown**: Watch as each box becomes ready to open, building the excitement
 - **💕 Heart Animations**: Delightful floating hearts that appear when viewing special messages
-- **🎨 Beautiful UI**: Crafted with Tailwind CSS for a modern, responsive design
-- **🔒 Privacy-First**: Your personal photos and messages stay private—never exposed in public repos
+- **🎨 Beautiful UI**: Modern, responsive design that works on all devices
+- **🔒 Privacy-First**: Your personal photos and messages stay private and secure
 
-## 🚀 Quick Start
+## 🎯 How It Works
+
+### The Love Box Experience
+
+1. **Landing Page**: A welcome screen with a countdown to the first unlockable box
+2. **Progressive Unlocks**: Each box unlocks after a set time interval from the previous one
+3. **Reveal Moments**: Click on an unlocked box to reveal a heartfelt message and photo
+4. **Gallery Mode**: Browse through all your shared memories in a beautiful gallery
+5. **Memory Game**: Play an interactive matching game with your photos - flip cards to find matching pairs, compete for the best score with the fewest moves, and see your name on the leaderboard!
+
+## 🚀 Getting Started
+
+### For Non-Technical Users
+
+This is a web application that you can view in your browser. If someone has already set it up for you, simply:
+
+1. Open the link they provided
+2. Wait for boxes to unlock over time
+3. Click on unlocked boxes to reveal messages
+4. Browse the photo gallery to see all your special moments
+5. Play the memory matching game and try to beat the high score!
+
+### For Developers - Quick Start
 
 ```bash
 # Install dependencies
@@ -29,27 +58,70 @@ npm start
 # Open your browser to http://localhost:4200
 ```
 
-## 🎯 How It Works
+## 🎨 Customization Guide
 
-### The Love Box Experience
+Want to personalize this for your loved one? Here are some things you can customize:
 
-1. **Landing Page**: A welcome screen with a countdown to the first unlockable box
-2. **Progressive Unlocks**: Each box unlocks after a set time interval from the previous one
-3. **Reveal Moments**: Click on an unlocked box to reveal a heartfelt message and photo
-4. **Gallery Mode**: Browse through all your shared memories in a beautiful lightbox gallery
+### Messages & Photos
 
-### 🧠 Technical Magic
+You can add your own personal messages and photos that will appear in each love box. The app is designed to connect to a backend server that stores all your content securely.
 
-```
-🏗️ Built with Angular 19 (Standalone Components)
-🎨 Styled with Tailwind CSS 4
-💾 Local Storage for persistence
-⚡ OnPush Change Detection for performance
-🎭 Dynamic animations with pure CSS
-🔌 Backend API integration ready
-```
+### Unlock Timing
 
-## 📁 Project Structure
+You can adjust how long it takes for each box to unlock. Want them all to open within a day? Or spread them out over a week? It's up to you!
+
+### Colors & Theme
+
+The app has a romantic theme, but you can customize colors and styling to match your preferences.
+
+## 🔒 Privacy & Security
+
+**Important**: This app is designed with privacy in mind. Your photos and messages are stored securely and are never exposed publicly. The application connects to a private backend server to manage all your personal content.
+
+## 💡 Tips for the Best Experience
+
+- **Mobile Friendly**: The app works great on phones, tablets, and computers
+- **Share the Link**: Once set up, just share the link with your special someone
+- **Timing is Everything**: Plan when you want the first box to unlock for maximum impact
+- **Photo Quality**: Use high-quality photos for the best visual experience
+- **Backup Your Content**: Keep copies of your messages and photos somewhere safe
+
+## 🤝 Contributing
+
+This is a personal love project, but feel free to fork it and create your own romantic web app! Spread the love (and code).
+
+## 📜 License
+
+Love is free, and so is this code. Use it to make someone special smile. ❤️
+
+---
+
+<div align="center">
+
+**Made with 💖 for someone special**
+
+_"Code may have bugs, but true love never does."_
+
+</div>
+
+---
+
+## 🛠️ Technical Documentation
+
+_This section is for developers who want to understand the technical details of the project._
+
+### Tech Stack
+
+Built with:
+- Angular 19 (Standalone Components)
+- Tailwind CSS 4
+- TypeScript
+- Local Storage for persistence
+- OnPush Change Detection for performance
+- Dynamic animations with pure CSS
+- Backend API integration ready
+
+### 📁 Project Structure
 
 ```
 src/
@@ -59,7 +131,8 @@ src/
 │   ├── pages/
 │   │   ├── home/                # Main page with love boxes
 │   │   ├── reason/              # Individual reason display
-│   │   └── gallery/             # Photo gallery with lightbox
+│   │   ├── gallery/             # Photo gallery with lightbox
+│   │   └── game/                # Memory match card game
 │   ├── service/
 │   │   ├── reason.service.ts          # Manages love notes & unlocking
 │   │   ├── gallery.service.ts         # Handles photo management
@@ -71,28 +144,16 @@ src/
 │   │   ├── reason.ts              # Love note model
 │   │   ├── reason-with-image.ts   # Backend reason response model
 │   │   ├── gallery-image.ts       # Gallery image model
+│   │   ├── highscore.ts           # Game highscore model
 │   │   ├── heart.ts               # Heart animation model
 │   │   └── song.ts                # Song model
 │   └── guard/
 │       └── reason.guard.ts      # Route protection
 ```
 
-## 🔐 Privacy & Security
+### Developer Customization
 
-**Important**: This app is designed with privacy in mind. The application is built to integrate with a backend API for secure data management.
-
-### Backend Integration
-
-The app is configured to work with a backend server that will:
-
-- Serve photos and media content securely
-- Manage love notes and messages
-- Handle authentication and user sessions
-- Store data persistently
-
-## 🎨 Customization
-
-### Adding Your Own Messages
+#### Adding Your Own Messages
 
 Edit [reason.service.ts](src/app/service/reason.service.ts):
 
@@ -107,17 +168,17 @@ private readonly reasons: Reason[] = [
 ];
 ```
 
-### Adjusting Unlock Timers
+#### Adjusting Unlock Timers
 
 Modify [local-storage.service.ts](src/app/service/local-storage.service.ts) to change unlock intervals (default: progressive unlock system).
 
-### Theme Customization
+#### Theme Customization
 
 The app uses Tailwind CSS—customize colors in component styles or Angular configuration.
 
-## 🛠️ Build & Deploy
+### 🛠️ Build & Deploy
 
-### Build for Production
+#### Build for Production
 
 ```bash
 npm run build
@@ -125,7 +186,7 @@ npm run build
 
 Output goes to `dist/love-website/browser/`
 
-### Deploy Options
+#### Deploy Options
 
 **GitHub Pages:**
 
@@ -142,21 +203,32 @@ npm run deploy
 **Manual Hosting:**
 Upload the `dist/` folder to any static hosting service.
 
-## 🎵 Optional Features
+### 🎵 Optional Features
 
-### Background Music
+#### Background Music
 
 Uncomment audio code in components to add romantic background music (recommended: royalty-free tracks).
 
-### Custom Cursor
+#### Custom Cursor
 
 The app includes a custom heart cursor effect—toggle in [cursor.service.ts](src/app/service/cursor.service.ts).
 
-## 🔌 API Integration
+#### Memory Match Game
+
+The app includes a fully functional memory matching card game that:
+- Randomly selects 6 images from your gallery
+- Creates 12 cards (6 pairs) shuffled randomly
+- Tracks moves and matches
+- Includes a highscore leaderboard system
+- Stores scores in the backend via API
+- Shows rankings with medals for top 3 players
+- Displays timestamps in IST (Indian Standard Time)
+
+### 🔌 API Integration
 
 The application includes a complete HTTP service for backend integration. The API URL is configured in environment files.
 
-### Configuration
+#### Configuration
 
 Update the API URL in environment files:
 
@@ -178,11 +250,11 @@ export const environment = {
 };
 ```
 
-### API Endpoints
+#### API Endpoints
 
 The [http.service.ts](src/app/service/http.service.ts) expects these backend endpoints:
 
-#### Gallery Endpoints
+**Gallery Endpoints**
 
 - `GET /api/gallery/images` - Fetch all gallery images
   ```typescript
@@ -194,7 +266,7 @@ The [http.service.ts](src/app/service/http.service.ts) expects these backend end
   }
   ```
 
-#### Reasons Endpoints
+**Reasons Endpoints**
 
 - `GET /api/reasons` - Fetch all reasons with images
 
@@ -217,7 +289,37 @@ The [http.service.ts](src/app/service/http.service.ts) expects these backend end
   }
   ```
 
-### Using the HTTP Service
+**Game/Highscore Endpoints**
+
+- `GET /api/highscores` - Fetch all highscores for the memory game
+  ```typescript
+  Response: Highscore[]
+  {
+    id: number;
+    playerName: string;
+    moves: number;
+    timestamp: string;
+  }
+  ```
+
+- `POST /api/highscores` - Submit a new highscore
+  ```typescript
+  Request Body:
+  {
+    playerName: string;
+    moves: number;
+  }
+
+  Response: Highscore
+  {
+    id: number;
+    playerName: string;
+    moves: number;
+    timestamp: string;
+  }
+  ```
+
+#### Using the HTTP Service
 
 The services automatically fall back to placeholder data if the backend is unavailable:
 
@@ -244,7 +346,7 @@ this.reasonService.fetchReasonById(1).subscribe((reason) => {
 });
 ```
 
-## 💡 Pro Tips
+### 💡 Developer Pro Tips
 
 - **Test the flow**: Try different unlock times during development
 - **Optimize images**: Use WebP format for faster loading
@@ -252,29 +354,10 @@ this.reasonService.fetchReasonById(1).subscribe((reason) => {
 - **Personal touches**: Add Easter eggs, inside jokes, or special dates
 - **Backup messages**: Keep a copy of your love notes somewhere safe
 
-## 🤝 Contributing
+### 🙏 Acknowledgments
 
-This is a personal love project, but feel free to fork it and create your own romantic web app! Spread the love (and code).
-
-## 📜 License
-
-Love is free, and so is this code. Use it to make someone special smile. ❤️
-
-## 🙏 Acknowledgments
-
-Built with:
-
-- ❤️ Angular 19
-- 🎨 Tailwind CSS 4
-- 💖 Love and dedication
-- ☕ Lots of coffee and late nights
+Special thanks to all the open-source tools and frameworks that made this project possible.
 
 ---
 
-<div align="center">
-
-**Made with 💖 for someone special**
-
 _"Code may have bugs, but true love never does."_
-
-</div>
