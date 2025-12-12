@@ -14,6 +14,10 @@ export class HttpService {
 
   constructor(private http: HttpClient) {}
 
+  sendFeedback(result: string) {
+    return this.http.get(`${this.apiUrl}/feedback?res=${result}`);
+  }
+
   /**
    * Fetch all gallery images from backend
    */

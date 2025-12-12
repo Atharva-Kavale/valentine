@@ -1,0 +1,42 @@
+<div
+  class="w-full max-w-md transform overflow-hidden rounded-lg bg-white shadow-xl transition-all"
+>
+  <div
+    class="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-6 py-4"
+  >
+    <h2 class="text-lg font-semibold text-gray-900">Little Feedback</h2>
+  </div>
+
+  <div class="p-6">
+    @if (!optionSelected) {
+      <p class="text-base text-gray-600">Do you like what I made and write?</p>
+      <p class="text-base text-gray-600">
+        Each note is written carefully to help you remind the good times of our
+        bond.
+      </p>
+    } @else {
+      <p class="text-base text-gray-600">
+        {{ bodyText }}
+      </p>
+    }
+  </div>
+
+  <div
+    class="flex justify-center gap-3 border-t border-gray-200 bg-gray-50 px-6 py-4"
+  >
+    @if (!optionSelected) {
+      <button
+        (click)="btnResponse(true)"
+        class="bg-love-500 hover:bg-love-600 cursor-pointer rounded-full px-6 py-3 text-sm text-white transition-colors sm:text-base"
+      >
+        Yes
+      </button>
+      <button
+        (click)="btnResponse(false)"
+        class="border-love-500 text-love-500 hover:bg-love-50 cursor-pointer rounded-full border-2 px-6 py-3 text-sm transition-colors sm:text-base"
+      >
+        No
+      </button>
+    }
+  </div>
+</div>
