@@ -25,7 +25,9 @@ export class DialogComponent {
 
     this.htpService.sendFeedback(result ? 'yes' : 'no').subscribe({
       next: (reason) => {
-        this.dialogRef.close();
+        setTimeout(() => {
+          this.dialogRef.close();
+        }, 2000);
       },
     });
   }
