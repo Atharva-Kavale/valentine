@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { GalleryImage } from '../model/gallery-image';
@@ -10,7 +10,12 @@ import { Highscore } from '../model/highscore';
   providedIn: 'root',
 })
 export class HttpService {
-  private readonly apiUrl = environment.apiUrl || 'http://localhost:3000/api';
+  private readonly apiUrl = environment.apiUrl || '/api';
+
+  // Bypasses ngrok's browser warning interstitial page for API calls
+  private readonly headers = new HttpHeaders({
+    'ngrok-skip-browser-warning': 'true',
+  });
 
   constructor(private http: HttpClient) {}
 
@@ -18,28 +23,36 @@ export class HttpService {
    * Fetch all gallery images from backend
    */
   getGalleryImages(): Observable<GalleryImage[]> {
-    return this.http.get<GalleryImage[]>(`${this.apiUrl}/gallery/images`);
+    return this.http.get<GalleryImage[]>(`${this.apiUrl}/gallery/images`, {
+      headers: this.headers,
+    });
   }
 
   /**
    * Fetch a single reason by ID
    */
   getReasonById(id: number): Observable<ReasonWithImage> {
-    return this.http.get<ReasonWithImage>(`${this.apiUrl}/reasons/${id}`);
+    return this.http.get<ReasonWithImage>(`${this.apiUrl}/reasons/${id}`, {
+      headers: this.headers,
+    });
   }
 
   /**
    * Fetch the total count of reasons
    */
   getReasonsCount(): Observable<{ count: number }> {
-    return this.http.get<{ count: number }>(`${this.apiUrl}/reasons/count`);
+    return this.http.get<{ count: number }>(`${this.apiUrl}/reasons/count`, {
+      headers: this.headers,
+    });
   }
 
   /**
    * Fetch all highscores
    */
   getHighscores(): Observable<Highscore[]> {
-    return this.http.get<Highscore[]>(`${this.apiUrl}/highscores`);
+    return this.http.get<Highscore[]>(`${this.apiUrl}/highscores`, {
+      headers: this.headers,
+    });
   }
 
   /**
@@ -51,10 +64,8 @@ export class HttpService {
   ): Observable<{ message: string; score: Highscore }> {
     return this.http.post<{ message: string; score: Highscore }>(
       `${this.apiUrl}/highscores`,
-      {
-        playerName,
-        moves,
-      },
+      { playerName, moves },
+      { headers: this.headers },
     );
   }
 }

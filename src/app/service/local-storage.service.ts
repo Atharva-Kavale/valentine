@@ -105,14 +105,16 @@ export class LocalStorageService {
   }
 
   isBoxUnlocked(boxId: number): boolean {
-    const state = this.getBoxState(boxId);
-    if (!state) return false;
+    return true;
 
-    if (boxId === 1) return true;
+    // const state = this.getBoxState(boxId);
+    // if (!state) return false;
 
-    if (state.unlocksAt === null) return false;
+    // if (boxId === 1) return true;
 
-    return isInPast(state.unlocksAt);
+    // if (state.unlocksAt === null) return false;
+
+    // return isInPast(state.unlocksAt);
   }
 
   getRemainingTime(boxId: number): number {
