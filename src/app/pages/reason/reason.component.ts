@@ -10,6 +10,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ReasonService } from '../../service/reason.service';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
+import { Dialog } from '@angular/cdk/dialog';
+import { DialogComponent } from '../../components/dialog/dialog.component';
 
 @Component({
   selector: 'app-reason',
@@ -26,10 +28,13 @@ export class ReasonComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private reasonsService: ReasonService,
     private cdr: ChangeDetectorRef,
+    public dialog: Dialog,
   ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    console.log(id);
 
     // Fetch the specific reason from backend
     this.reasonsService
@@ -48,6 +53,14 @@ export class ReasonComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         },
       });
+
+    if (id == 12) {
+      this.dialog.open(DialogComponent, {
+        height: '400px',
+        width: '600px',
+        panelClass: 'my-dialog',
+      });
+    }
   }
 
   ngOnDestroy(): void {
